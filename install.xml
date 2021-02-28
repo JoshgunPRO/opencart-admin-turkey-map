@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<modification>
+	<name>Admin Türkiye Haritası 3x</name>
+	<version>1.0</version>
+	<link>https://joshgunpro.com</link>
+	<author>Joshgun Eminagarov</author>
+	<code>admin_turkey_map_3x</code>
+	<file path="admin/view/template/extension/dashboard/map_info.twig"> 
+
+	  <operation error="skip">
+       <search><![CDATA[<script type="text/javascript" src="view/javascript/jquery/jqvmap/maps/jquery.vmap.world.js"></script> ]]></search>
+        <add position="replace"><![CDATA[<script type="text/javascript" src="view/javascript/jquery/jqvmap/maps/jquery.vmap.turkey.js"></script> ]]></add>
+	  </operation> 
+
+	  <operation error="skip">
+       <search><![CDATA[				map: 'world_en',]]></search>
+        <add position="replace"><![CDATA[				map: 'turkey_tr',]]></add>
+	  </operation> 
+
+    </file>
+
+	<file path="admin/model/extension/report/sale.php"> 
+
+	  <operation error="skip">
+       <search><![CDATA[		$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, c.iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "country` c ON (o.payment_country_id = c.country_id) WHERE o.order_status_id > '0' GROUP BY o.payment_country_id");]]></search>
+        <add position="replace"><![CDATA[		$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, z.code as iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "zone` z ON (o.payment_zone_id = z.zone_id) WHERE o.order_status_id > '0' GROUP BY o.payment_zone_id");]]></add>
+	  </operation> 
+
+    </file>
+    
+ 	<file path="admin/model/extension/dashboard/sale.php"> 
+
+	  <operation error="skip">
+       <search><![CDATA[		$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, c.iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "country` c ON (o.payment_country_id = c.country_id) WHERE o.order_status_id > '0' GROUP BY o.payment_country_id");]]></search>
+        <add position="replace"><![CDATA[		$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, z.code as iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "zone` z ON (o.payment_zone_id = z.zone_id) WHERE o.order_status_id > '0' GROUP BY o.payment_zone_id");]]></add>
+	  </operation> 
+
+    </file>
+
+ 	<file path="admin/model/extension/dashboard/map.php"> 
+
+	  <operation error="skip">
+       <search><![CDATA[		$implode = array();]]></search>
+        <add position="after"><![CDATA[
+		$config_complete_status_string = implode(',', $this->config->get('config_complete_status'));
+        ]]></add>
+	  </operation> 
+
+	  <operation error="skip">
+       <search><![CDATA[		if ($implode) {]]></search>
+        <add position="replace" offset="2"><![CDATA[		if ($implode) {
+        			$query = $this->db->query("SELECT COUNT(*) AS total, SUM(o.total) AS amount, z.code as iso_code_2 FROM `" . DB_PREFIX . "order` o LEFT JOIN `" . DB_PREFIX . "zone` z ON (o.payment_zone_id = z.zone_id) WHERE o.order_status_id IN ($config_complete_status_string) GROUP BY o.payment_zone_id");
+        			]]></add>
+	  </operation> 
+
+    </file>
+
+<file path="admin/language/tr*/extension/dashboard/map.php">
+	<operation error="skip">
+      <search><![CDATA[$_['heading_title']    = 'Dünya Haritası';]]></search>
+      <add position="replace"><![CDATA[$_['heading_title']    = 'Türkiye Haritası';]]></add>
+  </operation>
+</file>
+
+<file path="admin/language/en*/extension/dashboard/map.php">
+	<operation error="skip">
+      <search><![CDATA[$_['heading_title']    = 'World Map';]]></search>
+      <add position="replace"><![CDATA[$_['heading_title']    = 'Turkey Map';]]></add>
+  </operation>
+</file>
+</modification>
