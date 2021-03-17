@@ -10,3 +10,5 @@ This extension exactly solves this problem by adding the map of Turkey on the ho
 - Campatible with all 3.x OpenCart versions
 - The map follow default OpenCart style
 - 3x Zoom
+
+Compatibility: OpenCart 3x
